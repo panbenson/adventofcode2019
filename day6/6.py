@@ -1,5 +1,8 @@
 from collections import defaultdict
 
+def dfs(orbit, closed, current, depth):
+  return sum([depth + dfs(orbit, closed + [current], next, depth + 1) for next in orbit[current] if next not in closed])
+
 def main():
   example = open("6.in", "r")
 
@@ -15,10 +18,5 @@ def main():
   print(dfs(orbit, [], "COM", 1))
 
   # part 2
-
-
-def dfs(orbit, closed, current, depth):
-  return sum([depth + dfs(orbit, closed + [current], next, depth + 1) for next in orbit[current] if next not in closed])
-
 
 main()

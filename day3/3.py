@@ -6,7 +6,7 @@ def main():
 
   center = 10000
   # lets assume 5k by 5k is large enough
-  board = [['' for i in range(center * 2 + 1)] for x in range(center * 2 + 1)] # center point at 2500, 2500
+  board = [[0 for i in range(center * 2 + 1)] for x in range(center * 2 + 1)] # center point at 2500, 2500
   closest_x = closest_y = 0
   curr_x = curr_y = center
 
@@ -23,7 +23,7 @@ def main():
       curr_x += dist
     elif dir == 'L':
       for x in range(curr_x - 1, curr_x - dist - 1, -1):
-        board[closest_x][curr_y] = steps
+        board[x][curr_y] = steps
         steps += 1
       curr_x -= dist
     elif dir == 'U':
@@ -37,7 +37,7 @@ def main():
         steps += 1
       curr_y -= dist
 
-  board[center][center] = ''
+  board[center][center] = 0
   curr_x = curr_y = center
   steps = 1
   fewest = -1
@@ -48,7 +48,7 @@ def main():
 
     if dir == 'R':
       for x in range(curr_x + 1, curr_x + dist + 1):
-        if board[x][curr_y] != '' and (fewest == -1 or fewest > steps + board[x][curr_y]): # abs(closest_x - center) + abs(closest_y - center) > abs(x - center) + abs(curr_y - center):
+        if board[x][curr_y] != 0 and (fewest == -1 or fewest > steps + board[x][curr_y]): # abs(closest_x - center) + abs(closest_y - center) > abs(x - center) + abs(curr_y - center):
           print("crossed", x, curr_y, fewest)
           fewest = steps + board[x][curr_y]
           closest_x = x
@@ -57,7 +57,7 @@ def main():
       curr_x += dist
     elif dir == 'L':
       for x in range(curr_x - 1, curr_x - dist - 1, -1):
-        if board[x][curr_y] != '' and (fewest == -1 or fewest > steps + board[x][curr_y]): # abs(closest_x - center) + abs(closest_y - center) > abs(x - center) + abs(curr_y - center):
+        if board[x][curr_y] != 0 and (fewest == -1 or fewest > steps + board[x][curr_y]): # abs(closest_x - center) + abs(closest_y - center) > abs(x - center) + abs(curr_y - center):
           print("crossed", x, curr_y, fewest)
           fewest = steps + board[x][curr_y]
           closest_x = x
@@ -66,7 +66,7 @@ def main():
       curr_x -= dist
     elif dir == 'U':
       for y in range(curr_y + 1, curr_y + dist + 1):
-        if board[curr_x][y] != '' and (fewest == -1 or fewest > steps + board[curr_x][y]): # abs(closest_x - center) + abs(closest_y - center) > abs(curr_x - center) + abs(y - center):
+        if board[curr_x][y] != 0 and (fewest == -1 or fewest > steps + board[curr_x][y]): # abs(closest_x - center) + abs(closest_y - center) > abs(curr_x - center) + abs(y - center):
           print("crossed", curr_x, y, fewest)
           fewest = steps + board[curr_x][y]
           closest_x = curr_x
@@ -75,7 +75,7 @@ def main():
       curr_y += dist
     else:
       for y in range(curr_y - 1, curr_y - dist - 1, -1):
-        if board[curr_x][y] != '' and (fewest == -1 or fewest > steps + board[curr_x][y]): # abs(closest_x - center) + abs(closest_y - center) > abs(curr_x - center) + abs(y - center):
+        if board[curr_x][y] != 0 and (fewest == -1 or fewest > steps + board[curr_x][y]): # abs(closest_x - center) + abs(closest_y - center) > abs(curr_x - center) + abs(y - center):
           print("crossed", curr_x, y, fewest)
           fewest = steps + board[curr_x][y]
           closest_x = curr_x

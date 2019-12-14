@@ -65,9 +65,10 @@ def int_code_computer(prog):
     else:
       print("error in program!")
 
-def int_code_computer_two_input(prog, phase, signal):
-  ins = 0
+def int_code_computer_two_input(prog, last_ins, phase, signal):
+  ins = last_ins
   input_prompt = 0
+  output_val = 0
 
   while ins < len(prog):
     opcode = prog[ins] % 100
@@ -101,8 +102,7 @@ def int_code_computer_two_input(prog, phase, signal):
       ins += 2
     elif opcode == 4:
       # output at position
-      # print(prog[val1])
-      return prog[val1]
+      return ins, prog[val1]
       ins += 2
     elif opcode == 5:
       if prog[val1] != 0:
@@ -131,6 +131,8 @@ def int_code_computer_two_input(prog, phase, signal):
     # 7: first less than 2 ? 1 in 3rd : 0
     # 8: first equals 2 ? 1 in 3rd : 0
     elif opcode == 99:
+      print("halting program!!", output_val)
+      return ins, output_val
       break
     else:
       print("error in program!")
@@ -151,7 +153,7 @@ def amplifier_controller_software():
       for line in code:
         program = list(map(int,line.strip().split(",")))
 
-      signal = int_code_computer_two_input(program, phase, signal)
+      _, signal = int_code_computer_two_input(program, 0, phase, signal)
 
     if max_signal < signal:
       max_signal = signal
@@ -166,14 +168,21 @@ def amplifier_controller_software_feedback():
   for seq in p:
     # for each sequence, calculate the final_output
     signal = 0
+    ins = 0
 
-    for phase in seq:
-      # laod program
-      code = open("7.in", "r")
-      for line in code:
-        program = list(map(int,line.strip().split(",")))
+    # keep looping the same signal until we get the signal to stop
 
-      signal = int_code_computer_two_input(program, phase, signal)
+    # laod program
+    code = open("p2example.in", "r")
+    for line in code:
+      program = list(map(int,line.strip().split(",")))
+    while True:
+      for phase in seq:
+        ins, signal = int_code_computer_two_input(program, ins, phase, signal)
+        if max_signal < signal:
+          max_signal = signal
+        print(max_signal)
+      
 
     if max_signal < signal:
       max_signal = signal
@@ -182,5 +191,6 @@ def amplifier_controller_software_feedback():
 
 def main():
   amplifier_controller_software()
+  amplifier_controller_software_feedback()
 
 main()
